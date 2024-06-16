@@ -1,0 +1,5 @@
+com o docker instalado tenha os arquivos anexados com esse documento reservados em uma pasta/diretório
+entre nesse diretório e abra o terminal / ou / abra o terminal e va até o diretório
+execute o comando:
+    docker-compose up -d
+esse comando irá rodar todos os containers configurados nos docker composers
