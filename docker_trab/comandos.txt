@@ -1,3 +1,6 @@
+Se ainda não fez o git clone:
+git clone https://github.com/MestreDoPortal/docker-trab.git
+
 Com o docker desktop instalado a partir de uma facil busca na internet, é ja incluso o 
 dockercompose, tenha os arquivos anexados com esse documento reservados em uma pasta/diretório
 entre nesse diretório e abra o terminal / ou / abra o terminal e va até o diretório
