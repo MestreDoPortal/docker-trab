@@ -32,7 +32,7 @@ services:
     image: prom/mysqld-exporter
     command:
       - --config.my-cnf=/cfg/.my.cnf
-      - --mysqld.address= IP:3306
+      - --mysqld.address= 172.29.160.1:3306
     volumes:
       - "./.my.cnf:/cfg/.my.cnf"
     ports:

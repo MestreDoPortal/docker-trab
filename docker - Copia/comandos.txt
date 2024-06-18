@@ -1,5 +1,73 @@
-com o docker instalado tenha os arquivos anexados com esse documento reservados em uma pasta/diretório
+Com o docker desktop instalado a partir de uma facil busca na internet, é ja incluso o 
+dockercompose, tenha os arquivos anexados com esse documento reservados em uma pasta/diretório
 entre nesse diretório e abra o terminal / ou / abra o terminal e va até o diretório
+
+faça algumas alterações antes de iniciar o docker
+    entre no docker-compose.yml, va até o service do mysql exporter e modifique o segundo command
+    substitua a palavra IP pelo seu real ip que pode ser acessado ao entrar no terminal e digitar
+    o comando    "ipconfig"
+    procure na resposta concedida " Endereço IPv4. . . . . . . .  . . . . . . . : "
+    o ip estará após os 2 pontos
+    também va ao prometheusyml e faça a mesma alteração no target do job name "mysql_exporter"
+
+
 execute o comando:
     docker-compose up -d
 esse comando irá rodar todos os containers configurados nos docker composers
+
+va até o seu navegador e pesquise por "localhost:9090"
+isso acessará o prometheus, no header, aperte em status e nas opções disponibilizadas, aperte em
+targets, la você podera ver todos os containers que o prmetheus esta monitorando senndo deontrados
+como "up"
+
+em outra guia, acesse "localhost:8080" para acessar o wordpress siga os passos que a própria 
+página irá mostrar, ao se cadastrar de for possível fazer o login, significa que o banco de dados 
+mysql está armazenando os dados
+
+
+entendendo os arquivos.yml
+    docker-compose
+        a versão do docker compose é a 3.1
+        service descreve os serviços que serão:
+            wordpress com sua imagem que é puxada da internet na ultima versão
+            a porta da maquina real 8080 se conecta com a virutal 80
+            o environment define as configurações necessária do wordpress
+            para a conexão com o mysql e o redis
+            volumes criam volumes para persistencia de dados
+            depends_on faz com que o wordpress dependa do funcionamento do serviço db e redis
+
+            db com sua imagem da versao 5.7 do mysql
+            o environment define as configurações necessária do mysql
+            não há definição de porta pois a padrão do mysql ja é a 3306
+
+            mysql-exporter funcionando a partir da imagem prom/mysql-exporter
+            command define o comando de inicialização, especificando o caminho 
+            do arquivo de configuração e o endereço do MySQL
+            o volmes mapeia o arquivo de configuração .my.cnf do host para 
+            /cfg/.my.cnf no container
+            o arquivo .my.cnf define as configurações para o funcionamento da exportação de dados
+            ports mapeia a porta 9104 virtual para a 9104 do host
+
+            redis funcionando a partir da imagem redis na sua ultima versão
+            ports mapeia a porta virtual 6379 para a porta 6379 no host,
+            permitindo acesso ao Redis
+
+            redis_exporter funcionando a partir da imagem oliver006/redis_exporter
+            na sua ultima versão
+            environment define a variável de ambiente para o endereço do Redis
+            ports mapeia a porta virtual 9121 para a host 9121
+
+            prometheus funcionando a partir da imagem prometheus na sua ultima versão
+            ports mapeia a porta virtual 9090 para a host 9090
+            volumes mapeia o arquivo prometheus.yml q possui os arquivos de 
+            configuração do próprio
+            command o comando de inicialização para o Prometheus, especificando o
+            caminho do arquivo de configuração
+
+        os ultimos volumes definem a existencia dos volumes citados
+
+    prometheus.yml
+        aqui estão as configurações do prometheus de que ele monitora e como
+        todos seguem o padrao de job-name que os nomeia e static_configs:
+      - targets:
+        apontando para as portas as quais o prometheus ficará monitorando
